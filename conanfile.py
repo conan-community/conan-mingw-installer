@@ -13,9 +13,9 @@ class MingwinstallerConan(ConanFile):
                "arch": ["x86", "x86_64"],
                "version": ["4.8", "4.9"]}
     default_options = "exception=sjlj", "threads=posix", "arch=x86_64", "version=4.9"
-    requires = "7z_installer/0.1@lasote/testing"
 
     def config(self):
+        self.requires.add("7z_installer/0.1@lasote/testing", private=True)
         if (self.options.arch == "x86" and self.options.exception == "seh") or \
            (self.options.arch == "x86_64" and self.options.exception == "dwarf2"):
             raise Exception("Not valid %s and %s combination!" % (self.options.arch, 
