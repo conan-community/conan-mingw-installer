@@ -14,6 +14,7 @@ class MingwinstallerConan(ConanFile):
                "version": ["4.8", "4.9"]}
     default_options = "exception=sjlj", "threads=posix", "arch=x86_64", "version=4.9"
     requires = "7z_installer/0.1@lasote/testing"
+    build_policy = "missing"
 
     def config(self):
         if (self.options.arch == "x86" and self.options.exception == "seh") or \
