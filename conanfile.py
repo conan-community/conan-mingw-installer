@@ -16,7 +16,7 @@ class MingwinstallerConan(ConanFile):
     build_policy = "missing"
 
 
-    def config(self):
+    def configure(self):
         self.requires.add("7z_installer/0.1@lasote/testing", private=True)
         if (self.options.arch == "x86" and self.options.exception == "seh") or \
            (self.options.arch == "x86_64" and self.options.exception == "dwarf2"):
@@ -56,7 +56,7 @@ class MingwinstallerConan(ConanFile):
         
         tools.download(files[keychain], "file.7z")
         env = ConfigureEnvironment(self)
-        self.run("%s && 7z x file.7z" % env.command_line)
+        self.run("%s && 7z x file.7z" % env.command_line_env)
     
     def package(self):
         self.copy("*", dst="", src="mingw32")
