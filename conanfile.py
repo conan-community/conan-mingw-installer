@@ -1,4 +1,4 @@
-from conans import ConanFile, CMake, tools, ConfigureEnvironment
+from conans import ConanFile, CMake, tools
 import os
 
 
@@ -63,11 +63,9 @@ class MingwinstallerConan(ConanFile):
                  "54_x86_64_sjlj_win32": "http://downloads.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/5.4.0/threads-win32/sjlj/x86_64-5.4.0-release-win32-sjlj-rt_v5-rev0.7z",
                  "54_x86_64_seh_posix": "http://downloads.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/5.4.0/threads-posix/seh/x86_64-5.4.0-release-posix-seh-rt_v5-rev0.7z",
                  "54_x86_64_sjlj_posix": "http://downloads.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/5.4.0/threads-posix/sjlj/x86_64-5.4.0-release-posix-sjlj-rt_v5-rev0.7z",}
-        
-        
+
         tools.download(files[keychain], "file.7z")
-        env = ConfigureEnvironment(self)
-        self.run("%s && 7z x file.7z" % env.command_line_env)
+        self.run("7z x file.7z")
     
     def package(self):
         self.copy("*", dst="", src="mingw32")
@@ -77,3 +75,4 @@ class MingwinstallerConan(ConanFile):
         self.env_info.path.append(os.path.join(self.package_folder, "bin"))
         self.env_info.CXX = os.path.join(self.package_folder, "bin", "g++.exe")
         self.env_info.CC = os.path.join(self.package_folder, "bin", "gcc.exe")
+
