@@ -7,26 +7,26 @@ class MingwinstallerConan(ConanFile):
     version = "0.1"
     license = "MIT"
     url = "http://github.com/lasote/conan-mingw-installer"
-    settings = {"os": ["Windows"]}
-    options = {"threads": ["posix", "win32"],
-               "exception": ["dwarf2", "sjlj", "seh"], 
-               "arch": ["x86", "x86_64"],
-               "version": ["4.8", "4.9", "5.4", "6.2", "6.3", "7.1"]}
-    default_options = "exception=sjlj", "threads=posix", "arch=x86_64", "version=4.9"
+    settings = {"os": ["Windows"],
+        "arch":["x86", "x86_64"],
+        "compiler":{ "gcc" :{"version": None,
+                             "libcxx": ["libstdc++"],
+                             "threads": ["posix", "win32"],
+                             "exception": ["dwarf2", "sjlj", "seh"]}}}
     build_policy = "missing"
 
 
     def configure(self):
         self.requires.add("7z_installer/0.1@lasote/testing", private=True)
-        if (self.options.arch == "x86" and self.options.exception == "seh") or \
-           (self.options.arch == "x86_64" and self.options.exception == "dwarf2"):
-            raise Exception("Not valid %s and %s combination!" % (self.options.arch, 
-                                                                  self.options.exception))       
+        if (self.settings.arch == "x86" and self.settings.compiler.exception == "seh") or \
+           (self.settings.arch == "x86_64" and self.settings.compiler.exception == "dwarf2"):
+            raise Exception("Not valid %s and %s combination!" % (self.settings.arch, 
+                                                                  self.settings.compiler.exception))       
     def build(self):
-        keychain = "%s_%s_%s_%s" % (str(self.options.version).replace(".", ""), 
-                                    self.options.arch,
-                                    self.options.exception,
-                                    self.options.threads)
+        keychain = "%s_%s_%s_%s" % (str(self.settings.compiler.version).replace(".", ""), 
+                                    self.settings.arch,
+                                    self.settings.compiler.exception,
+                                    self.settings.compiler.threads)
         files = {"48_x86_dwarf2_posix": "http://downloads.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.8.2/threads-posix/dwarf/i686-4.8.2-release-posix-dwarf-rt_v3-rev0.7z",
                  "48_x86_sjlj_posix": "http://downloads.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.8.2/threads-posix/sjlj/i686-4.8.2-release-posix-sjlj-rt_v3-rev0.7z",
                  "48_x86_64_seh_posix": "http://downloads.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/4.8.2/threads-posix/seh/x86_64-4.8.2-release-posix-seh-rt_v3-rev0.7z",
