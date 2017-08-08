@@ -8,11 +8,11 @@ class MingwInstallerConan(ConanFile):
     license = "http://www.mingw.org/license"
     url = "http://github.com/lasote/conan-mingw-installer"
     settings = {"os": ["Windows"],
-        "arch":["x86", "x86_64"],
-        "compiler":{ "gcc" :{"version": None,
-                             "libcxx": ["libstdc++"],
-                             "threads": ["posix", "win32"],
-                             "exception": ["dwarf2", "sjlj", "seh"]}}}
+                "arch": ["x86", "x86_64"],
+                "compiler": {"gcc": {"version": None,
+                                     "libcxx": ["libstdc++"],
+                                     "threads": ["posix", "win32"],
+                                     "exception": ["dwarf2", "sjlj", "seh"]}}}
     build_policy = "missing"
     description = 'MinGW, a contraction of "Minimalist GNU for Windows", ' \
                   'is a minimalist development environment for native Microsoft' \
@@ -24,6 +24,7 @@ class MingwInstallerConan(ConanFile):
            (self.settings.arch == "x86_64" and self.settings.compiler.exception == "dwarf2"):
             raise Exception("Not valid %s and %s combination!" % (self.settings.arch, 
                                                                   self.settings.compiler.exception))       
+
     def build(self):
         keychain = "%s_%s_%s_%s" % (str(self.settings.compiler.version).replace(".", ""), 
                                     self.settings.arch,
@@ -97,4 +98,3 @@ class MingwInstallerConan(ConanFile):
         self.env_info.path.append(os.path.join(self.package_folder, "bin"))
         self.env_info.CXX = os.path.join(self.package_folder, "bin", "g++.exe")
         self.env_info.CC = os.path.join(self.package_folder, "bin", "gcc.exe")
-
