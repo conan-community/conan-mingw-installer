@@ -13,6 +13,9 @@ if __name__ == "__main__":
         for th in ["posix", "win32"]:
             tmp2 = copy.copy(tmp)
             tmp2["compiler.threads"] = th
-            builder.add(tmp2, {}, {}, {})
+            for ex in ["seh", "sjlj"]:
+                tmp3 = copy.copy(tmp2)
+                tmp3["compiler.exception"] = ex
+                builder.add(tmp3, {}, {}, {})
     
     builder.run()
