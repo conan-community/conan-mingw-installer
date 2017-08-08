@@ -2,10 +2,10 @@ from conans import ConanFile, tools
 import os
 
 
-class MingwinstallerConan(ConanFile):
+class MingwInstallerConan(ConanFile):
     name = "mingw_installer"
-    version = "0.1"
-    license = "MIT"
+    version = "1.0"
+    license = "http://www.mingw.org/license"
     url = "http://github.com/lasote/conan-mingw-installer"
     settings = {"os": ["Windows"],
         "arch":["x86", "x86_64"],
@@ -14,7 +14,9 @@ class MingwinstallerConan(ConanFile):
                              "threads": ["posix", "win32"],
                              "exception": ["dwarf2", "sjlj", "seh"]}}}
     build_policy = "missing"
-
+    description = 'MinGW, a contraction of "Minimalist GNU for Windows", ' \
+                  'is a minimalist development environment for native Microsoft' \
+                  ' Windows applications.'
 
     def configure(self):
         self.requires.add("7z_installer/0.1@lasote/testing", private=True)

@@ -1,16 +1,17 @@
-
 import os
+import StringIO
 from conans import ConanFile
 
-
 class MinGWTestConan(ConanFile):
-    """ MinGW installer Conan package test """
-
-    settings = "os", "arch", "compiler", "build_type"
-    generators = "virtualenv", "gcc"
+    
+    generators = "gcc"
+    settings = {"os", "arch", "compiler"}
 
     def build(self):
-        self.run('activate && gcc %s/main.cpp @conanbuildinfo.gcc -lstdc++ -o main' % self.conanfile_directory)
+        self.run('gcc %s/main.cpp @conanbuildinfo.gcc -lstdc++ -o main' % self.conanfile_directory)
 
     def test(self):
-        self.run("activate && main")
+        self.run("main")
+        output = StringIO.StringIO()
+        self.run("gcc --version", output=output)
+        assert(str(self.settings.compiler.version) in str(output.getvalue()))
