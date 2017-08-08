@@ -11,7 +11,8 @@ if __name__ == "__main__":
         tmp = copy.copy(base)
         tmp["compiler.version"] = version
         for th in ["posix", "win32"]:
-            tmp["compiler.threads"] = th
-            builder.add(tmp, {}, {}, {})
+            tmp2 = copy.copy(tmp)
+            tmp2["compiler.threads"] = th
+            builder.add(tmp2, {}, {}, {})
     
     builder.run()
