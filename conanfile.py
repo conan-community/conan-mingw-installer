@@ -17,8 +17,8 @@ class MingwInstallerConan(ConanFile):
     description = 'MinGW, a contraction of "Minimalist GNU for Windows", ' \
                   'is a minimalist development environment for native Microsoft' \
                   ' Windows applications.'
-    build_requires = "7z_installer/0.1@lasote/testing"
-
+    build_requires = "7z_installer/1.0@conan/stable"
+    
     def configure(self):
         if (self.settings.arch == "x86" and self.settings.compiler.exception == "seh") or \
            (self.settings.arch == "x86_64" and self.settings.compiler.exception == "dwarf2"):
