@@ -10,7 +10,7 @@ class MingwInstallerConan(ConanFile):
     settings = {"os": ["Windows"],
                 "arch": ["x86", "x86_64"],
                 "compiler": {"gcc": {"version": None,
-                                     "libcxx": ["libstdc++"],
+                                     "libcxx": ["libstdc++", "libstdc++11"],
                                      "threads": ["posix", "win32"],
                                      "exception": ["dwarf2", "sjlj", "seh"]}}}
     build_policy = "missing"
@@ -18,19 +18,19 @@ class MingwInstallerConan(ConanFile):
                   'is a minimalist development environment for native Microsoft' \
                   ' Windows applications.'
     build_requires = "7z_installer/1.0@conan/stable"
-    
+
     def configure(self):
         if (self.settings.arch == "x86" and self.settings.compiler.exception == "seh") or \
            (self.settings.arch == "x86_64" and self.settings.compiler.exception == "dwarf2"):
-            raise Exception("Not valid %s and %s combination!" % (self.settings.arch, 
-                                                                  self.settings.compiler.exception))       
+            raise Exception("Not valid %s and %s combination!" % (self.settings.arch,
+                                                                  self.settings.compiler.exception))
 
     def build(self):
-        keychain = "%s_%s_%s_%s" % (str(self.settings.compiler.version).replace(".", ""), 
+        keychain = "%s_%s_%s_%s" % (str(self.settings.compiler.version).replace(".", ""),
                                     self.settings.arch,
                                     self.settings.compiler.exception,
                                     self.settings.compiler.threads)
-        
+
         files = {
             ############################################################################################################
             ###  4.8
@@ -117,7 +117,7 @@ class MingwInstallerConan(ConanFile):
 
         tools.download(files[keychain], "file.7z")
         self.run("7z x file.7z")
-    
+
     def package(self):
         self.copy("*", dst="", src="mingw32")
         self.copy("*", dst="", src="mingw64")
