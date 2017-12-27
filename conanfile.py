@@ -1,4 +1,6 @@
 from conans import ConanFile, tools
+from conans import __version__ as conan_version
+from conans.model.version import Version
 import os
 
 
@@ -7,27 +9,40 @@ class MingwInstallerConan(ConanFile):
     version = "1.0"
     license = "http://www.mingw.org/license"
     url = "http://github.com/lasote/conan-mingw-installer"
-    settings = {"os": ["Windows"],
-                "arch": ["x86", "x86_64"],
+
+    if conan_version < Version("0.99"):
+        os_name = "os"
+        arch_name = "arch"
+    else:
+        os_name = "os_build"
+        arch_name = "arch_build"
+
+    settings = {os_name: ["Windows"],
+                arch_name: ["x86", "x86_64"],
                 "compiler": {"gcc": {"version": None,
                                      "libcxx": ["libstdc++", "libstdc++11"],
                                      "threads": ["posix", "win32"],
                                      "exception": ["dwarf2", "sjlj", "seh"]}}}
+
     build_policy = "missing"
     description = 'MinGW, a contraction of "Minimalist GNU for Windows", ' \
                   'is a minimalist development environment for native Microsoft' \
                   ' Windows applications.'
     build_requires = "7z_installer/1.0@conan/stable"
 
+    @property
+    def arch(self):
+        return self.settings.get_safe("arch_build") or self.settings.get_safe("arch")
+
     def configure(self):
-        if (self.settings.arch == "x86" and self.settings.compiler.exception == "seh") or \
-           (self.settings.arch == "x86_64" and self.settings.compiler.exception == "dwarf2"):
-            raise Exception("Not valid %s and %s combination!" % (self.settings.arch,
+        if (self.arch == "x86" and self.settings.compiler.exception == "seh") or \
+           (self.arch == "x86_64" and self.settings.compiler.exception == "dwarf2"):
+            raise Exception("Not valid %s and %s combination!" % (self.arch,
                                                                   self.settings.compiler.exception))
 
     def build(self):
         keychain = "%s_%s_%s_%s" % (str(self.settings.compiler.version).replace(".", ""),
-                                    self.settings.arch,
+                                    self.arch,
                                     self.settings.compiler.exception,
                                     self.settings.compiler.threads)
 
