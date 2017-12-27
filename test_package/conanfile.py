@@ -1,6 +1,6 @@
-import os
 import StringIO
 from conans import ConanFile
+
 
 class MinGWTestConan(ConanFile):
     
@@ -8,7 +8,7 @@ class MinGWTestConan(ConanFile):
     settings = {"os", "arch", "compiler"}
 
     def build(self):
-        self.run('gcc %s/main.cpp @conanbuildinfo.gcc -lstdc++ -o main' % self.conanfile_directory)
+        self.run('gcc %s/main.cpp @conanbuildinfo.gcc -lstdc++ -o main' % self.source_folder)
 
     def test(self):
         self.run("main")
