@@ -167,21 +167,6 @@ class MingwList(object):
             print(i.print_obj())
 
 
-    def find_best_version_minor(self, mingw_list):
-        best = []
-        best_value = "-1"
-
-        for i in mingw_list:
-            if i.version_minor > best_value:
-                best_value = i.version_minor
-
-        for i in mingw_list:
-            if i.version_minor == best_value:
-                best.append(i)
-
-        return best
-
-
     def find_version_minor(self, mingw_list, version_minor='best'):
         best = []
         best_value = "-1" if version_minor == 'best' else version_minor
