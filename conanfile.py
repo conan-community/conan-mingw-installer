@@ -164,7 +164,7 @@ class MingwList(object):
 
     def list_all(self):
         for i in self.mingw:
-            print(i.print())
+            print(i.print_obj())
 
 
     def find_best_version_minor(self, mingw_list):
