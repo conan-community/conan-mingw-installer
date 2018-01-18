@@ -41,7 +41,12 @@ class MingwInstallerConan(ConanFile):
                                                                   self.settings.compiler.exception))
 
     def build(self):
-        keychain = "%s_%s_%s_%s" % (str(self.settings.compiler.version).replace(".", ""),
+
+        latest = {"5": "5.4",
+                  "6": "6.4",
+                  "7": "7.2"}.get(str(self.settings.compiler.version), str(self.settings.compiler.version))
+
+        keychain = "%s_%s_%s_%s" % (latest.replace(".", ""),
                                     self.arch,
                                     self.settings.compiler.exception,
                                     self.settings.compiler.threads)
