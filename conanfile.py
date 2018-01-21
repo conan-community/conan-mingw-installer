@@ -48,6 +48,7 @@ class MingwInstallerConan(ConanFile):
         tools.download(self.repository_file, "repository.txt", overwrite=True)
 
     def build(self):
+
         if self.options.update_list:
             self.output.info("Updating MinGW List ... please wait.")
             self.update_repository()
@@ -67,7 +68,6 @@ class MingwInstallerConan(ConanFile):
                                                str(self.settings.compiler.threads),
                                                str(self.settings.compiler.exception),
                                                v_major, v_minor, v_patch)
-
         self.output.info(mingw_info)
         self.output.info("Found MinGW: %s" % mingw_obj.print_obj())
 
