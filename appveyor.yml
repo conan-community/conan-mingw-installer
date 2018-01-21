@@ -10,7 +10,7 @@ environment:
     CONAN_LOGIN_USERNAME: "lasote"
     CONAN_CHANNEL: "testing"
     CONAN_UPLOAD: "https://api.bintray.com/conan/conan-community/conan"
-    CONAN_STABLE_BRANCH_PATTERN: "master*"
+    CONAN_STABLE_BRANCH_PATTERN: "master"
     CONAN_TOTAL_PAGES: 1
     CONAN_UPLOAD_ONLY_WHEN_STABLE: 1
 
