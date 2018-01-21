@@ -30,6 +30,7 @@ class MingwInstallerConan(ConanFile):
                   'is a minimalist development environment for native Microsoft' \
                   ' Windows applications.'
     build_requires = "7z_installer/1.0@conan/stable"
+    build_policy = "missing"
 
     @property
     def arch(self):
