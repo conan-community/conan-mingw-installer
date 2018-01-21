@@ -10,19 +10,16 @@ environment:
     CONAN_LOGIN_USERNAME: "lasote"
     CONAN_CHANNEL: "testing"
     CONAN_UPLOAD: "https://api.bintray.com/conan/conan-community/conan"
-    CONAN_STABLE_BRANCH_PATTERN: "master"
+    CONAN_STABLE_BRANCH_PATTERN: "master*"
+    CONAN_TOTAL_PAGES: 1
     CONAN_UPLOAD_ONLY_WHEN_STABLE: 1
-    CONAN_TOTAL_PAGES: 4
+
 
     matrix:
         - CONAN_CURRENT_PAGE: 1
-        - CONAN_CURRENT_PAGE: 2
-        - CONAN_CURRENT_PAGE: 3
-        - CONAN_CURRENT_PAGE: 4
 
 install:
   - set PATH=%PATH%;%PYTHON%/Scripts/
-  - pip.exe install conan==1.0.0-beta.2 --upgrade
   - pip.exe install conan_package_tools
   - conan user # It creates the conan data directory
 
