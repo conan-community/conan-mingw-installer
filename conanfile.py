@@ -24,7 +24,7 @@ class MingwInstallerConan(ConanFile):
                 "compiler": {"gcc": {"version": None,
                                      "libcxx": ["libstdc++", "libstdc++11"],
                                      "threads": ["posix", "win32"],
-                                     "exception": ["dwarf2", "dwarf", "sjlj", "seh"]}}}
+                                     "exception": ["dwarf2", "sjlj", "seh"]}}}
 
     description = 'MinGW, a contraction of "Minimalist GNU for Windows", ' \
                   'is a minimalist development environment for native Microsoft' \
