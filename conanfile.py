@@ -24,7 +24,7 @@ class MingwInstallerConan(ConanFile):
                 "compiler": {"gcc": {"version": None,
                                      "libcxx": ["libstdc++", "libstdc++11"],
                                      "threads": ["posix", "win32"],
-                                     "exception": ["dwarf2", "sjlj", "seh"]}}}
+                                     "exception": ["dwarf2", "dwarf", "sjlj", "seh"]}}}
 
     description = 'MinGW, a contraction of "Minimalist GNU for Windows", ' \
                   'is a minimalist development environment for native Microsoft' \
@@ -77,6 +77,9 @@ def get_best_installer(arch, threads, exception, version):
 
     if arch == "x86":
         arch = "i686"
+        
+    if exception == "dwarf2":
+        exception = "dwarf"
 
     tools.download(repository_file, "repository.txt", overwrite=True)
 
