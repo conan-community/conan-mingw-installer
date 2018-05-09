@@ -77,6 +77,9 @@ def get_best_installer(arch, threads, exception, version):
 
     if arch == "x86":
         arch = "i686"
+        
+    if exception == "dwarf2":
+        exception = "dwarf"
 
     tools.download(repository_file, "repository.txt", overwrite=True)
 
