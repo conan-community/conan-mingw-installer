@@ -108,7 +108,7 @@ def get_best_installer(arch, threads, exception, version):
                 best_match = i
 
     if not best_match:
-        raise Exception("There is no suitable MinGW release for the requested features.")
+        raise Exception("There is no suitable MinGW release for the requested features %s %s %s %s" % (arch, threads, exception, version))
     else:
         return best_match
 
@@ -135,3 +135,28 @@ if __name__ == "__main__":
     installer = get_best_installer("x86", "posix", "sjlj", "5.2.0")
     assert (installer.version == "5.2.0")
     assert (installer.revision == 1)
+    
+    installer = get_best_installer("x86_64", "posix", "seh", "4.9")
+    assert (installer.version == "4.9.4")
+    assert (installer.revision == 0)
+    
+    installer = get_best_installer("x86_64", "posix", "sjlj", "4.9")
+    assert (installer.version == "4.9.4")
+    assert (installer.revision == 0)
+    
+    installer = get_best_installer("x86", "posix", "sjlj", "4.9")
+    assert (installer.version == "4.9.4")
+    assert (installer.revision == 0)
+    
+    installer = get_best_installer("x86", "posix", "dwarf2", "4.9")
+    assert (installer.version == "4.9.4")
+    assert (installer.revision == 0)
+    
+    installer = get_best_installer("x86_64", "posix", "seh", "6.3")
+    assert (installer.version == "6.3.0")
+    assert (installer.revision == 2)
+    
+    installer = get_best_installer("x86_64", "posix", "seh", "7.1")
+    assert (installer.version == "7.1.0")
+    assert (installer.revision == 2)
+    

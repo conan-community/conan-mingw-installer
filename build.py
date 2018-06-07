@@ -15,6 +15,12 @@ if __name__ == "__main__":
             tmp2["compiler.threads"] = th
             for ex in ["seh", "sjlj"]:
                 tmp3 = copy.copy(tmp2)
+                tmp3["arch"] = "x86_64"
+                tmp3["compiler.exception"] = ex
+                builder.add(tmp3, {}, {}, {})
+            for ex in ["dwarf2", "sjlj"]:
+                tmp3 = copy.copy(tmp2)
+                tmp3["arch"] = "x86"
                 tmp3["compiler.exception"] = ex
                 builder.add(tmp3, {}, {}, {})
     
