@@ -2,7 +2,7 @@ import os
 
 from collections import namedtuple
 
-from conans import ConanFile, tools, __version__ as conan_version
+from conans import ConanFile, tools
 from conans.model.version import Version
 
 
@@ -12,15 +12,8 @@ class MingwInstallerConan(ConanFile):
     license = "http://www.mingw.org/license"
     url = "http://github.com/lasote/conan-mingw-installer"
 
-    if conan_version < Version("0.99"):
-        os_name = "os"
-        arch_name = "arch"
-    else:
-        os_name = "os_build"
-        arch_name = "arch_build"
-
-    settings = {os_name: ["Windows"],
-                arch_name: ["x86", "x86_64"],
+    settings = {"os": ["Windows"],
+                "arch" : ["x86", "x86_64"],
                 "compiler": {"gcc": {"version": None,
                                      "libcxx": ["libstdc++", "libstdc++11"],
                                      "threads": ["posix", "win32"],
@@ -32,14 +25,10 @@ class MingwInstallerConan(ConanFile):
     build_requires = "7z_installer/1.0@conan/stable"
     build_policy = "missing"
 
-    @property
-    def arch(self):
-        return self.settings.get_safe("arch_build") or self.settings.get_safe("arch")
-
     def build(self):
         self.output.info("Updating MinGW List ... please wait.")
 
-        installer = get_best_installer(str(self.arch),
+        installer = get_best_installer(str(self.settings.arch),
                                        str(self.settings.compiler.threads),
                                        str(self.settings.compiler.exception),
                                        str(self.settings.compiler.version))
@@ -81,7 +70,7 @@ def get_best_installer(arch, threads, exception, version):
     if exception == "dwarf2":
         exception = "dwarf"
 
-    tools.download(repository_file, "repository.txt", overwrite=True)
+    tools.download(repository_file, "repository.txt", overwrite=True, retry=10)
 
     installers = []
     with open("repository.txt") as f:
