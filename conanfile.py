@@ -4,6 +4,7 @@ from collections import namedtuple
 
 from conans import ConanFile, tools
 from conans.model.version import Version
+import shutil
 
 
 class MingwInstallerConan(ConanFile):
@@ -36,10 +37,13 @@ class MingwInstallerConan(ConanFile):
         self.output.info("Downloading: %s" % installer.url)
         tools.download(installer.url, "file.7z")
         self.run("7z x file.7z")
+        os.remove('file.7z')
 
     def package(self):
         self.copy("*", dst="", src="mingw32")
         self.copy("*", dst="", src="mingw64")
+        shutil.rmtree('mingw32', True)
+        shutil.rmtree('mingw64', True)
 
     def package_info(self):
         self.env_info.path.append(os.path.join(self.package_folder, "bin"))
