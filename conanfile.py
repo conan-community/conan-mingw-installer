@@ -2,8 +2,9 @@ import os
 
 from collections import namedtuple
 
-from conans import ConanFile, tools, __version__ as conan_version
+from conans import ConanFile, tools
 from conans.model.version import Version
+import shutil
 
 
 class MingwInstallerConan(ConanFile):
@@ -12,15 +13,8 @@ class MingwInstallerConan(ConanFile):
     license = "http://www.mingw.org/license"
     url = "http://github.com/lasote/conan-mingw-installer"
 
-    if conan_version < Version("0.99"):
-        os_name = "os"
-        arch_name = "arch"
-    else:
-        os_name = "os_build"
-        arch_name = "arch_build"
-
-    settings = {os_name: ["Windows"],
-                arch_name: ["x86", "x86_64"],
+    settings = {"os": ["Windows"],
+                "arch" : ["x86", "x86_64"],
                 "compiler": {"gcc": {"version": None,
                                      "libcxx": ["libstdc++", "libstdc++11"],
                                      "threads": ["posix", "win32"],
@@ -32,14 +26,10 @@ class MingwInstallerConan(ConanFile):
     build_requires = "7z_installer/1.0@conan/stable"
     build_policy = "missing"
 
-    @property
-    def arch(self):
-        return self.settings.get_safe("arch_build") or self.settings.get_safe("arch")
-
     def build(self):
         self.output.info("Updating MinGW List ... please wait.")
 
-        installer = get_best_installer(str(self.arch),
+        installer = get_best_installer(str(self.settings.arch),
                                        str(self.settings.compiler.threads),
                                        str(self.settings.compiler.exception),
                                        str(self.settings.compiler.version))
@@ -47,10 +37,13 @@ class MingwInstallerConan(ConanFile):
         self.output.info("Downloading: %s" % installer.url)
         tools.download(installer.url, "file.7z")
         self.run("7z x file.7z")
+        os.remove('file.7z')
 
     def package(self):
         self.copy("*", dst="", src="mingw32")
         self.copy("*", dst="", src="mingw64")
+        shutil.rmtree('mingw32', True)
+        shutil.rmtree('mingw64', True)
 
     def package_info(self):
         self.env_info.path.append(os.path.join(self.package_folder, "bin"))
@@ -81,7 +74,7 @@ def get_best_installer(arch, threads, exception, version):
     if exception == "dwarf2":
         exception = "dwarf"
 
-    tools.download(repository_file, "repository.txt", overwrite=True)
+    tools.download(repository_file, "repository.txt", overwrite=True, retry=10)
 
     installers = []
     with open("repository.txt") as f:
@@ -108,7 +101,7 @@ def get_best_installer(arch, threads, exception, version):
                 best_match = i
 
     if not best_match:
-        raise Exception("There is no suitable MinGW release for the requested features.")
+        raise Exception("There is no suitable MinGW release for the requested features %s %s %s %s" % (arch, threads, exception, version))
     else:
         return best_match
 
@@ -135,3 +128,28 @@ if __name__ == "__main__":
     installer = get_best_installer("x86", "posix", "sjlj", "5.2.0")
     assert (installer.version == "5.2.0")
     assert (installer.revision == 1)
+    
+    installer = get_best_installer("x86_64", "posix", "seh", "4.9")
+    assert (installer.version == "4.9.4")
+    assert (installer.revision == 0)
+    
+    installer = get_best_installer("x86_64", "posix", "sjlj", "4.9")
+    assert (installer.version == "4.9.4")
+    assert (installer.revision == 0)
+    
+    installer = get_best_installer("x86", "posix", "sjlj", "4.9")
+    assert (installer.version == "4.9.4")
+    assert (installer.revision == 0)
+    
+    installer = get_best_installer("x86", "posix", "dwarf2", "4.9")
+    assert (installer.version == "4.9.4")
+    assert (installer.revision == 0)
+    
+    installer = get_best_installer("x86_64", "posix", "seh", "6.3")
+    assert (installer.version == "6.3.0")
+    assert (installer.revision == 2)
+    
+    installer = get_best_installer("x86_64", "posix", "seh", "7.1")
+    assert (installer.version == "7.1.0")
+    assert (installer.revision == 2)
+    

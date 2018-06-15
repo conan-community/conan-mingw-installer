@@ -9,16 +9,11 @@ from conans.model.version import Version
 class MinGWTestConan(ConanFile):
     
     generators = "gcc"
-    if conan_version < Version("0.99"):
-        os_name = "os"
-        arch_name = "arch"
-    else:
-        os_name = "os_build"
-        arch_name = "arch_build"
 
-    settings = os_name, arch_name, "compiler"
+    settings = "os", "arch", "compiler"
 
     def build(self):
+        self.output.info("arch:%s" % self.settings.arch)
         self.run('gcc %s/main.cpp @conanbuildinfo.gcc -lstdc++ -o main' % self.source_folder)
 
     def test(self):
