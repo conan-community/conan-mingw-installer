@@ -7,7 +7,7 @@ if __name__ == "__main__":
     base = {"os": "Windows", "compiler": "gcc", "compiler.version": "7",
             "compiler.exception": "seh", "compiler.libcxx": "libstdc++",
             "compiler.threads": "posix"}
-    for version in ["4.9", "5", "6", "7"]:
+    for version in ["4.9", "5", "6", "7", "8"]:
         tmp = copy.copy(base)
         tmp["compiler.version"] = version
         for th in ["posix", "win32"]:
