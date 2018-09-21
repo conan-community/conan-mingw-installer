@@ -1,6 +1,4 @@
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/lasote/conan-mingw-installer)](https://ci.appveyor.com/project/lasote/conan-mingw-installer)
-
-
+[![Build status](https://ci.appveyor.com/api/projects/status/48oc6nv4ju4b9gjb/branch/master?svg=true)](https://ci.appveyor.com/project/lasote/conan-mingw-installer-p6wrh/branch/master)
 
 # conan-mingw-installer
 
