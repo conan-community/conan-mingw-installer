@@ -49,8 +49,8 @@ class MingwInstallerConan(ConanFile):
         self.env_info.path.append(os.path.join(self.package_folder, "bin"))
         self.env_info.MINGW_HOME = str(self.package_folder)
         self.env_info.CONAN_CMAKE_GENERATOR = "MinGW Makefiles"
-        self.env_info.CXX = os.path.join(self.package_folder, "bin", "g++.exe")
-        self.env_info.CC = os.path.join(self.package_folder, "bin", "gcc.exe")
+        self.env_info.CXX = os.path.join(self.package_folder, "bin", "g++.exe").replace("\\", "/")
+        self.env_info.CC = os.path.join(self.package_folder, "bin", "gcc.exe").replace("\\", "/")
 
 
 class Installer(namedtuple("Installer", "version arch threads exception revision url")):
