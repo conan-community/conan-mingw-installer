@@ -44,6 +44,9 @@ class MingwInstallerConan(ConanFile):
         self.copy("*", dst="", src="mingw64")
         shutil.rmtree('mingw32', True)
         shutil.rmtree('mingw64', True)
+        
+    def package_id(self):
+        self.info.include_build_settings()
 
     def package_info(self):
         self.env_info.path.append(os.path.join(self.package_folder, "bin"))
