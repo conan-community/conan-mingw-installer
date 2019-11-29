@@ -13,8 +13,8 @@ class MingwInstallerConan(ConanFile):
     license = "http://www.mingw.org/license"
     url = "http://github.com/lasote/conan-mingw-installer"
 
-    settings = {"os": ["Windows"],
-                "arch" : ["x86", "x86_64"],
+    settings = {"os_build": ["Windows"],
+                "arch_build" : ["x86", "x86_64"],
                 "compiler": {"gcc": {"version": None,
                                      "libcxx": ["libstdc++", "libstdc++11"],
                                      "threads": ["posix", "win32"],
@@ -29,7 +29,7 @@ class MingwInstallerConan(ConanFile):
     def build(self):
         self.output.info("Updating MinGW List ... please wait.")
 
-        installer = get_best_installer(str(self.settings.arch),
+        installer = get_best_installer(str(self.settings.arch_build),
                                        str(self.settings.compiler.threads),
                                        str(self.settings.compiler.exception),
                                        str(self.settings.compiler.version))
