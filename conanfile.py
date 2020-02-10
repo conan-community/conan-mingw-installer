@@ -15,6 +15,7 @@ class MingwInstallerConan(ConanFile):
 
     settings = {"os_build": ["Windows"],
                 "arch_build" : ["x86", "x86_64"],
+                "arch": ["x86", "x86_64"],
                 "compiler": {"gcc": {"version": None,
                                      "threads": ["posix", "win32"],
                                      "exception": ["dwarf2", "sjlj", "seh"]}}}
@@ -28,7 +29,7 @@ class MingwInstallerConan(ConanFile):
     def build(self):
         self.output.info("Updating MinGW List ... please wait.")
 
-        installer = get_best_installer(str(self.settings.arch_build),
+        installer = get_best_installer(str(self.settings.arch),
                                        str(self.settings.compiler.threads),
                                        str(self.settings.compiler.exception),
                                        str(self.settings.compiler.version))
@@ -46,6 +47,8 @@ class MingwInstallerConan(ConanFile):
 
     def package_id(self):
         self.info.include_build_settings()
+        self.info.settings.arch_build = self.info.settings.arch
+        del self.info.settings.arch
 
     def package_info(self):
         self.env_info.path.append(os.path.join(self.package_folder, "bin"))
