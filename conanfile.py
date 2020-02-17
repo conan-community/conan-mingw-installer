@@ -11,10 +11,10 @@ class MingwInstallerConan(ConanFile):
     name = "mingw_installer"
     version = "1.0"
     license = "http://www.mingw.org/license"
-    url = "http://github.com/conan-community/conan-mingw-installer"
+    url = "http://github.com/lasote/conan-mingw-installer"
 
-    settings = {"os_build": ["Windows"],
-                "arch_build" : ["x86", "x86_64"],
+    settings = {"os": ["Windows"],
+                "arch" : ["x86", "x86_64"],
                 "compiler": {"gcc": {"version": None,
                                      "libcxx": ["libstdc++", "libstdc++11"],
                                      "threads": ["posix", "win32"],
@@ -29,7 +29,7 @@ class MingwInstallerConan(ConanFile):
     def build(self):
         self.output.info("Updating MinGW List ... please wait.")
 
-        installer = get_best_installer(str(self.settings.arch_build),
+        installer = get_best_installer(str(self.settings.arch),
                                        str(self.settings.compiler.threads),
                                        str(self.settings.compiler.exception),
                                        str(self.settings.compiler.version))
@@ -44,9 +44,6 @@ class MingwInstallerConan(ConanFile):
         self.copy("*", dst="", src="mingw64")
         shutil.rmtree('mingw32', True)
         shutil.rmtree('mingw64', True)
-
-    def package_id(self):
-        self.info.include_build_settings()
 
     def package_info(self):
         self.env_info.path.append(os.path.join(self.package_folder, "bin"))
@@ -73,7 +70,7 @@ def get_best_installer(arch, threads, exception, version):
 
     if arch == "x86":
         arch = "i686"
-
+        
     if exception == "dwarf2":
         exception = "dwarf"
 
@@ -131,28 +128,28 @@ if __name__ == "__main__":
     installer = get_best_installer("x86", "posix", "sjlj", "5.2.0")
     assert (installer.version == "5.2.0")
     assert (installer.revision == 1)
-
+    
     installer = get_best_installer("x86_64", "posix", "seh", "4.9")
     assert (installer.version == "4.9.4")
     assert (installer.revision == 0)
-
+    
     installer = get_best_installer("x86_64", "posix", "sjlj", "4.9")
     assert (installer.version == "4.9.4")
     assert (installer.revision == 0)
-
+    
     installer = get_best_installer("x86", "posix", "sjlj", "4.9")
     assert (installer.version == "4.9.4")
     assert (installer.revision == 0)
-
+    
     installer = get_best_installer("x86", "posix", "dwarf2", "4.9")
     assert (installer.version == "4.9.4")
     assert (installer.revision == 0)
-
+    
     installer = get_best_installer("x86_64", "posix", "seh", "6.3")
     assert (installer.version == "6.3.0")
     assert (installer.revision == 2)
-
+    
     installer = get_best_installer("x86_64", "posix", "seh", "7.1")
     assert (installer.version == "7.1.0")
     assert (installer.revision == 2)
-
+    
