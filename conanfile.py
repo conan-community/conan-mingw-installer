@@ -16,7 +16,6 @@ class MingwInstallerConan(ConanFile):
     settings = {"os": ["Windows"],
                 "arch" : ["x86", "x86_64"],
                 "compiler": {"gcc": {"version": None,
-                                     "libcxx": ["libstdc++", "libstdc++11"],
                                      "threads": ["posix", "win32"],
                                      "exception": ["dwarf2", "sjlj", "seh"]}}}
 
