@@ -24,6 +24,7 @@ class MingwInstallerConan(ConanFile):
                   ' Windows applications.'
     build_requires = "7z_installer/1.0@conan/stable"
     build_policy = "missing"
+    deprecated = True
 
     def build(self):
         self.output.info("Updating MinGW List ... please wait.")
@@ -154,4 +155,3 @@ if __name__ == "__main__":
     installer = get_best_installer("x86_64", "posix", "seh", "7.1")
     assert (installer.version == "7.1.0")
     assert (installer.revision == 2)
-
